@@ -1,0 +1,44 @@
+﻿@model VinylHub.Web.ViewModels.ArtistViewModel
+
+@{
+    ViewData["Title"] = "Artiest bewerken";
+}
+
+<h2>Artiest bewerken</h2>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Bio" class="form-label"></label>
+        <textarea asp-for="Bio" class="form-control"></textarea>
+        <span asp-validation-for="Bio" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Image" class="form-label"></label>
+        @if (Model.ExistingImageUrl != null)
+        {
+            <div class="mb-2">
+                <img src="@Model.ExistingImageUrl" style="max-height: 100px;" />
+            </div>
+        }
+        <input asp-for="Image" type="file" class="form-control" />
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Bewaren</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuleren</a>
+</form>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

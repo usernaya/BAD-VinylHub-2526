@@ -1,0 +1,36 @@
+﻿@model IEnumerable<VinylHub.Domain.Entities.Artist>
+@{
+    ViewData["Title"] = "Artiesten";
+}
+<h1 class="mb-4">Artiesten</h1>
+<a asp-action="Create" class="btn btn-primary mb-4">+ Artiest toevoegen</a>
+<div class="row row-cols-1 row-cols-md-4 g-3">
+    @foreach (var artist in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                @if (artist.ImageUrl != null)
+                {
+                    <img src="@artist.ImageUrl" class="card-img-top" style="height: 150px; object-fit: cover;" />
+                }
+                else
+                {
+                    <div class="bg-light d-flex align-items-center justify-content-center" style="height: 150px;">
+                        <span class="text-muted small">Geen afbeelding</span>
+                    </div>
+                }
+                <div class="card-body">
+                    <h5 class="card-title">@artist.Name</h5>
+                    <p class="card-text text-muted small">@artist.Bio</p>
+                </div>
+                <div class="card-footer d-flex gap-1">
+                    <a asp-action="Edit" asp-route-id="@artist.Id" class="btn btn-sm btn-outline-secondary w-100">Bewerken</a>
+                    <form asp-action="Delete" method="post" style="display:inline">
+                        <input type="hidden" name="id" value="@artist.Id" />
+                        <button type="submit" class="btn btn-sm btn-outline-danger">X</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>

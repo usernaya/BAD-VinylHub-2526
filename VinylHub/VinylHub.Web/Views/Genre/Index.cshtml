@@ -1,0 +1,35 @@
+﻿@model IEnumerable<VinylHub.Domain.Entities.Genre>
+
+@{
+    ViewData["Title"] = "Genres";
+}
+
+<h1>Genres</h1>
+
+<a asp-action="Create" class="btn btn-primary mb-3">+ Genre toevoegen</a>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Naam</th>
+            <th>Beschrijving</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var genre in Model)
+        {
+            <tr>
+                <td>@genre.Name</td>
+                <td>@genre.Description</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@genre.Id" class="btn btn-sm btn-warning">Bewerken</a>
+                    <form asp-action="Delete" method="post" style="display:inline">
+                        <input type="hidden" name="id" value="@genre.Id" />
+                        <button type="submit" class="btn btn-sm btn-danger">Verwijderen</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,35 @@
+﻿@model VinylHub.Web.ViewModels.LoanCreateViewModel
+
+@{
+    ViewData["Title"] = "Vinyl lenen";
+}
+
+<h2>Vinyl lenen</h2>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">@Model.VinylTitle</h5>
+        <p class="card-text">Artiest: @Model.ArtistName</p>
+    </div>
+</div>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="VinylId" />
+    <input type="hidden" asp-for="VinylTitle" />
+    <input type="hidden" asp-for="ArtistName" />
+
+    <div class="mb-3">
+        <label asp-for="LoanDays" class="form-label"></label>
+        <input asp-for="LoanDays" class="form-control" />
+        <span asp-validation-for="LoanDays" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Bevestigen</button>
+    <a asp-controller="Vinyl" asp-action="Details" asp-route-id="@Model.VinylId" class="btn btn-secondary">Annuleren</a>
+</form>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

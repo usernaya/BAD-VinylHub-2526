@@ -1,0 +1,57 @@
+﻿@model VinylHub.Domain.Entities.Artist
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="row mb-5">
+    <div class="col-md-3">
+        @if (Model.ImageUrl != null)
+        {
+            <img src="@Model.ImageUrl" class="img-fluid rounded shadow" />
+        }
+    </div>
+    <div class="col-md-9">
+        <h1 class="mb-2">@Model.Name</h1>
+        <p class="text-muted mb-4">@Model.Bio</p>
+
+        <h5 class="mb-3">Vinyls</h5>
+        @if (!Model.Vinyls.Any())
+        {
+            <p class="text-muted">Geen vinyls beschikbaar.</p>
+        }
+        else
+        {
+            <div class="row row-cols-1 row-cols-md-3 g-3">
+                @foreach (var vinyl in Model.Vinyls)
+                {
+                    <div class="col">
+                        <div class="card shadow-sm h-100">
+                            @if (vinyl.CoverImageUrl != null)
+                            {
+                                <img src="@vinyl.CoverImageUrl" class="card-img-top" style="height: 130px; object-fit: cover;" />
+                            }
+                            <div class="card-body p-2">
+                                <h6 class="card-title mb-1" style="font-size: 0.85rem;">@vinyl.Title</h6>
+                                <p class="text-muted mb-1" style="font-size: 0.75rem;">@vinyl.Genre.Name · @vinyl.ReleaseYear</p>
+                                @if (vinyl.IsAvailable)
+                                {
+                                    <span class="badge bg-success" style="font-size: 0.7rem;">Beschikbaar</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger" style="font-size: 0.7rem;">Uitgeleend</span>
+                                }
+                            </div>
+                            <div class="card-footer p-2">
+                                <a asp-controller="Vinyl" asp-action="Details" asp-route-id="@vinyl.Id" class="btn btn-sm btn-outline-primary w-100" style="font-size: 0.75rem;">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<a asp-controller="Vinyl" asp-action="Index" class="btn btn-secondary">Terug naar collectie</a>

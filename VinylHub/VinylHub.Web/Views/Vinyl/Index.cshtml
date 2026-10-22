@@ -1,0 +1,82 @@
+﻿@model VinylHub.Web.ViewModels.VinylFilterViewModel
+
+@{
+    ViewData["Title"] = "Collectie";
+}
+
+<h1>Vinyl Collectie</h1>
+
+@* Zoek en filter formulier *@
+<form asp-action="Index" method="get" class="mb-4">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <input type="text" name="searchTerm" value="@Model.SearchTerm"
+                   class="form-control" placeholder="Zoek op titel of artiest..." />
+        </div>
+        <div class="col-md-3">
+            <select name="artistId" class="form-select" asp-items="Model.Artists">
+                <option value=""> - Alle artiesten - </option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="genreId" class="form-select" asp-items="Model.Genres">
+                <option value=""> - Alle genres - </option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Zoeken</button>
+        </div>
+        <div class="col-md-2">
+            <a asp-action="Index" class="btn btn-secondary w-100">Filters wissen</a>
+        </div>
+    </div>
+</form>
+
+@if (User.HasClaim("IsAdmin", ""))
+{
+    <a asp-action="Create" class="btn btn-primary mb-3">+ Vinyl toevoegen</a>
+}
+
+<div class="row row-cols-1 row-cols-md-5 g-3 mb-4">
+    @foreach (var vinyl in Model.Vinyls)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                @if (vinyl.CoverImageUrl != null)
+                {
+                    <img src="@vinyl.CoverImageUrl" class="card-img-top" style="height: 150px; object-fit: cover;" />
+                }
+                else
+                {
+                    <div class="bg-light d-flex align-items-center justify-content-center" style="height: 150px;">
+                        <span class="text-muted small">Geen afbeelding</span>
+                    </div>
+                }
+                <div class="card-body p-2">
+                    <h6 class="card-title mb-1" style="font-size: 0.85rem;">@vinyl.Title</h6>
+                    <p class="text-muted mb-1" style="font-size: 0.75rem;">@vinyl.Artist.Name</p>
+                    <p class="text-muted mb-1" style="font-size: 0.75rem;">@vinyl.Genre.Name · @vinyl.ReleaseYear</p>
+                    @if (vinyl.IsAvailable)
+                    {
+                        <span class="badge bg-success" style="font-size: 0.7rem;">Beschikbaar</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger" style="font-size: 0.7rem;">Uitgeleend</span>
+                    }
+                </div>
+                <div class="card-footer p-2 d-flex gap-1">
+                    <a asp-action="Details" asp-route-id="@vinyl.Id" class="btn btn-sm btn-outline-primary w-100" style="font-size: 0.75rem;">Details</a>
+                    @if (User.HasClaim("IsAdmin", ""))
+                    {
+                        <a asp-action="Edit" asp-route-id="@vinyl.Id" class="btn btn-sm btn-outline-secondary" style="font-size: 0.75rem;">✎</a>
+                        <form asp-action="Delete" method="post" style="display:inline">
+                            <input type="hidden" name="id" value="@vinyl.Id" />
+                            <button type="submit" class="btn btn-sm btn-outline-danger" style="font-size: 0.75rem;"> X </button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

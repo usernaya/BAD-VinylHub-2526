@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using VinylHub.Infrastructure.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+            @{
+                ApplicationUser? currentUser = await UserManager.GetUserAsync(User);
+                string greeting;
+                int hour = DateTime.Now.Hour;
+
+                if (hour >= 7 && hour < 12)
+                    greeting = "Goedemorgen";
+                else if (hour >= 12 && hour < 18)
+                    greeting = "Goedemiddag";
+                else
+                    greeting = "Goedenavond";
+            }
+
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index">
+                @greeting, @currentUser?.FirstName @currentUser?.LastName!
+            </a>
+    </li>
+    <li class="nav-item">
+        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit" class="nav-link btn btn-link text-white border-0">Uitloggen</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+            <a class="nav-link" id="register" asp-area="Identity" asp-page="/Account/Register">Registreren</a>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link" id="login" asp-area="Identity" asp-page="/Account/Login">Inloggen</a>
+    </li>
+}
+</ul>

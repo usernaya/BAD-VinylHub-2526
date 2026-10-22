@@ -1,0 +1,57 @@
+## Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+## Build output
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Ll]og/
+[Ll]ogs/
+
+## .NET / NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+project.lock.json
+.nuget/
+
+## Test results
+[Tt]est[Rr]esult*/
+*.trx
+coverage*.xml
+
+## Publish output
+PublishScripts/
+*.pubxml
+*.publish.xml
+
+## ASP.NET secrets and local config
+secrets.json
+appsettings.Development.json
+
+## ReSharper / Rider / VS Code
+_ReSharper*/
+*.DotSettings.user
+.idea/
+.vscode/
+
+## Local database files
+*.mdf
+*.ldf
+*.ndf
+
+## OS files
+.DS_Store
+Thumbs.db
+Desktop.ini

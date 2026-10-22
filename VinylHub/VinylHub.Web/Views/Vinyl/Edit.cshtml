@@ -1,0 +1,73 @@
+﻿@model VinylHub.Web.ViewModels.VinylEditViewModel
+
+@{
+    ViewData["Title"] = "Vinyl wijzigen";
+}
+
+<h2>Vinyl wijzigen</h2>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="ExistingImageUrl" />
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ArtistId" class="form-label"></label>
+        <select asp-for="ArtistId" asp-items="Model.Artists" class="form-select">
+            <option value="">-- Kies een artiest --</option>
+        </select>
+        <span asp-validation-for="ArtistId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="GenreId" class="form-label"></label>
+        <select asp-for="GenreId" asp-items="Model.Genres" class="form-select">
+            <option value="">-- Kies een genre --</option>
+        </select>
+        <span asp-validation-for="GenreId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ReleaseYear" class="form-label"></label>
+        <input asp-for="ReleaseYear" class="form-control" />
+        <span asp-validation-for="ReleaseYear" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Label" class="form-label"></label>
+        <input asp-for="Label" class="form-control" />
+        <span asp-validation-for="Label" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Image" class="form-label"></label>
+        @if (Model.ExistingImageUrl != null)
+        {
+            <div class="mb-2">
+                <img src="@Model.ExistingImageUrl" style="max-height: 150px;" />
+            </div>
+        }
+        <input asp-for="Image" type="file" class="form-control" />
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Bewaren</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuleren</a>
+</form>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

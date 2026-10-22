@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container mt-4">
+
+    @* Hero sectie *@
+    <div class="p-5 mb-4 bg-light rounded-3 text-center">
+        <h1 class="display-5 fw-bold">Welkom bij VinylHub</h1>
+        <p class="col-md-8 mx-auto fs-5 text-muted">
+            Ontdek onze collectie vinylplaten en leen jouw favoriete albums.
+        </p>
+        <a asp-controller="Vinyl" asp-action="Index" class="btn btn-primary btn-lg">
+            Bekijk de collectie
+        </a>
+    </div>
+
+    @* Statistieken *@
+    <div class="row text-center mb-5">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="fw-bold text-primary">@ViewBag.TotalVinyls</h2>
+                    <p class="text-muted">Vinyls in collectie</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="fw-bold text-primary">@ViewBag.AvailableVinyls</h2>
+                    <p class="text-muted">Beschikbaar om te lenen</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Recente vinyls *@
+    <h2 class="mb-3">Recent toegevoegd</h2>
+    <div class="row row-cols-1 row-cols-md-4 g-4 mb-5">
+        @foreach (var vinyl in ViewBag.RecentVinyls)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    @if (vinyl.CoverImageUrl != null)
+                    {
+                        <img src="@vinyl.CoverImageUrl" class="card-img-top" style="height: 200px; object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <span>Geen afbeelding</span>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <h6 class="card-title fw-bold">@vinyl.Title</h6>
+                        <p class="card-text text-muted small">@vinyl.Artist.Name</p>
+                        @if (vinyl.IsAvailable)
+                        {
+                            <span class="badge bg-success">Beschikbaar</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Uitgeleend</span>
+                        }
+                    </div>
+                    <div class="card-footer">
+                        <a asp-controller="Vinyl" asp-action="Details" asp-route-id="@vinyl.Id" class="btn btn-sm btn-outline-primary w-100">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>

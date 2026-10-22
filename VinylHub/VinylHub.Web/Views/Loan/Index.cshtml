@@ -1,0 +1,76 @@
+﻿@model IEnumerable<VinylHub.Domain.Entities.Loan>
+
+@{
+    ViewData["Title"] = "Mijn leningen";
+}
+
+<h1>Mijn leningen</h1>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@if (!Model.Any())
+{
+    <p>Je hebt nog geen leningen.</p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Vinyl</th>
+                <th>Artiest</th>
+                <th>Startdatum</th>
+                <th>Terugbrengdatum</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var loan in Model)
+            {
+                <tr>
+                    <td>@loan.Vinyl.Title</td>
+                    <td>@loan.Vinyl.Artist.Name</td>
+                    <td>@loan.StartDate.ToString("dd/MM/yyyy")</td>
+                    <td>@loan.DueDate.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        @if (loan.Status == VinylHub.Domain.Enums.LoanStatus.Returned)
+                        {
+                            <span class="badge bg-success">Teruggegeven</span>
+                        }
+                        else if (loan.Status == VinylHub.Domain.Enums.LoanStatus.Overdue)
+                        {
+                            <span class="badge bg-danger">Te laat</span>
+                        }
+                        else if (loan.Status == VinylHub.Domain.Enums.LoanStatus.Cancelled)
+                        {
+                            <span class="badge bg-secondary">Geannuleerd</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-primary">Actief</span>
+                        }
+                    </td>
+                    <td>
+                        @if (loan.Status == VinylHub.Domain.Enums.LoanStatus.Active || loan.Status == VinylHub.Domain.Enums.LoanStatus.Overdue)
+                        {
+                            <form asp-action="Return" method="post" style="display:inline">
+                                <input type="hidden" name="loanId" value="@loan.Id" />
+                                <button type="submit" class="btn btn-sm btn-success">Terugbrengen</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a asp-controller="Vinyl" asp-action="Index" class="btn btn-secondary">Terug naar collectie</a>
